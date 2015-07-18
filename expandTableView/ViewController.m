@@ -18,12 +18,11 @@
 {
     NSArray * _testDatas;
     NSMutableArray * _expands;
-    UITableView * _contentTableView;
+    NSInteger selectedSection;
     BOOL _compeleteAnimation;
     NSInteger _animationNum;
     
-    CGAffineTransform _transform;
-
+    UITableView * _contentTableView;
 }
 @end
 
@@ -47,7 +46,6 @@
 
 - (void)initEverything {
     
-    _transform = CGAffineTransformIdentity;
     _compeleteAnimation = YES;
     _testDatas = @[@"2",@"3",@"5",@"3",@"2",@"3",@"5",@"2",@"3",@"5",@"3",@"2",@"3",@"5"];
     _expands = [[NSMutableArray alloc] initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
@@ -76,21 +74,29 @@
     return 50;
 }
 
+//先call retun header 再call willDisplay
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     
     static NSString *simpleTableIdentifier = @"expandHeader";
+    NSInteger cellState = [[_expands objectAtIndex:section] integerValue];
     
     expandHeaderView *expandHeader = [tableView dequeueReusableHeaderFooterViewWithIdentifier:simpleTableIdentifier];
     
     if(expandHeader == nil)
     {
         expandHeader = [[expandHeaderView alloc] initWithReuseIdentifier:simpleTableIdentifier];
-
     }
     
     [expandHeader._headerBtn addTarget:self action:@selector(expandCell:) forControlEvents:UIControlEventTouchUpInside];
-
     expandHeader._headerBtn.tag = section;
+    
+    
+    if (cellState == 1) {
+        [expandHeader._headerBtn setBackgroundColor:[UIColor darkGrayColor]];
+    }
+    else
+        [expandHeader._headerBtn setBackgroundColor:[UIColor lightGrayColor]];
+    expandHeader._arrow.transform = CGAffineTransformMakeRotation(3.14*cellState);
 
     return expandHeader;
 }
@@ -123,20 +129,22 @@
 }
 
 -(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    if (section != selectedSection) {
+        return;
+    }
     
     expandHeaderView *expandHeader = (expandHeaderView *)view;
     if ([[_expands objectAtIndex:section] integerValue]==1)
     {
+        expandHeader._arrow.transform = CGAffineTransformMakeRotation(0);
         [expandHeader._headerBtn setBackgroundColor:[UIColor darkGrayColor]];
         [expandHeader selectedAnimation];
-        _transform = expandHeader._arrow.transform;
     }
-    else
-    {
-        [expandHeader._headerBtn setBackgroundColor:[UIColor lightGrayColor]];
-        expandHeader._arrow.transform = _transform;
+    else {
+        expandHeader._arrow.transform = CGAffineTransformMakeRotation(3.14);
         [expandHeader normalAnimation];
     }
+    selectedSection = -1;
 }
 
 #pragma mark - Click To Expands
@@ -159,14 +167,14 @@
         return;
     }
     
-    NSInteger section = sender.tag;
-    NSInteger thisSectionCanExpand = ![[_expands objectAtIndex:section] integerValue];
-    _animationNum = [[_testDatas objectAtIndex:section] integerValue];
+    selectedSection = sender.tag;
+    NSInteger thisSectionCanExpand = ![[_expands objectAtIndex:selectedSection] integerValue];
+    _animationNum = [[_testDatas objectAtIndex:selectedSection] integerValue];
 
-    [_expands replaceObjectAtIndex:section withObject:@(thisSectionCanExpand)];
+    [_expands replaceObjectAtIndex:selectedSection withObject:@(thisSectionCanExpand)];
     _compeleteAnimation = NO;
     [_contentTableView beginUpdates];
-    [_contentTableView reloadSections:[[NSIndexSet alloc] initWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    [_contentTableView reloadSections:[[NSIndexSet alloc] initWithIndex:selectedSection] withRowAnimation:UITableViewRowAnimationFade];
     [_contentTableView endUpdates];
     _compeleteAnimation = YES;
     

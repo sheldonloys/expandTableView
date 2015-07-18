@@ -29,20 +29,17 @@
     return self;
 }
 
-- (void)normalAnimation {
+- (void)normalAnimation{
     
-    if (_arrow.transform.a == 1.0) {
-        return;
-    }
     [UIView animateWithDuration:0.3 animations:^{
-        _arrow.transform = CGAffineTransformRotate(_arrow.transform, -3.14);
+        _arrow.transform = CGAffineTransformMakeRotation(0);
     }];
 }
 
 -(void)selectedAnimation {
     
     [UIView animateWithDuration:0.3 animations:^{
-        _arrow.transform = CGAffineTransformRotate(CGAffineTransformIdentity, 3.14);
+        _arrow.transform = CGAffineTransformMakeRotation(3.14);
     }];
 }
 
