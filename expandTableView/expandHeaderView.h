@@ -11,4 +11,8 @@
 @interface expandHeaderView : UITableViewHeaderFooterView
 
 @property (nonatomic, retain) UIButton *_headerBtn;
+@property (nonatomic, retain) UIImageView *_arrow;
+
+- (void)normalAnimation;
+- (void)selectedAnimation;
 @end

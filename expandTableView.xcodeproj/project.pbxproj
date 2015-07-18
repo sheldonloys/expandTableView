@@ -15,6 +15,7 @@
 		1548475C1B58D63E00D8C69E /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1548475A1B58D63E00D8C69E /* LaunchScreen.xib */; };
 		154847681B58D63E00D8C69E /* expandTableViewTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 154847671B58D63E00D8C69E /* expandTableViewTests.m */; };
 		154847731B58E18E00D8C69E /* expandHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 154847721B58E18E00D8C69E /* expandHeaderView.m */; };
+		158B30771B5A1DBC00C616F6 /* arrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 158B30761B5A1DBC00C616F6 /* arrow@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -43,6 +44,7 @@
 		154847671B58D63E00D8C69E /* expandTableViewTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = expandTableViewTests.m; sourceTree = "<group>"; };
 		154847711B58E18E00D8C69E /* expandHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = expandHeaderView.h; sourceTree = "<group>"; };
 		154847721B58E18E00D8C69E /* expandHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = expandHeaderView.m; sourceTree = "<group>"; };
+		158B30761B5A1DBC00C616F6 /* arrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "arrow@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 		1548473F1B58D63D00D8C69E = {
 			isa = PBXGroup;
 			children = (
+				158B30761B5A1DBC00C616F6 /* arrow@2x.png */,
 				1548474A1B58D63D00D8C69E /* expandTableView */,
 				154847641B58D63E00D8C69E /* expandTableViewTests */,
 				154847491B58D63D00D8C69E /* Products */,
@@ -204,6 +207,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				158B30771B5A1DBC00C616F6 /* arrow@2x.png in Resources */,
 				154847571B58D63D00D8C69E /* Main.storyboard in Resources */,
 				1548475C1B58D63E00D8C69E /* LaunchScreen.xib in Resources */,
 				154847591B58D63E00D8C69E /* Images.xcassets in Resources */,
@@ -422,6 +426,7 @@
 				1548476D1B58D63E00D8C69E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1548476E1B58D63E00D8C69E /* Build configuration list for PBXNativeTarget "expandTableViewTests" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +435,7 @@
 				154847701B58D63E00D8C69E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
