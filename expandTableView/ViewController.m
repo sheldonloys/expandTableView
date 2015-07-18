@@ -21,6 +21,9 @@
     UITableView * _contentTableView;
     BOOL _compeleteAnimation;
     NSInteger _animationNum;
+    
+    CGAffineTransform _transform;
+
 }
 @end
 
@@ -44,6 +47,7 @@
 
 - (void)initEverything {
     
+    _transform = CGAffineTransformIdentity;
     _compeleteAnimation = YES;
     _testDatas = @[@"2",@"3",@"5",@"3",@"2",@"3",@"5",@"2",@"3",@"5",@"3",@"2",@"3",@"5"];
     _expands = [[NSMutableArray alloc] initWithObjects:@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0",@"0", nil];
@@ -85,10 +89,6 @@
     }
     
     [expandHeader._headerBtn addTarget:self action:@selector(expandCell:) forControlEvents:UIControlEventTouchUpInside];
-    if ([[_expands objectAtIndex:section] integerValue]==1)
-        [expandHeader._headerBtn setBackgroundColor:[UIColor lightGrayColor]];
-        else
-            [expandHeader._headerBtn setBackgroundColor:[UIColor whiteColor]];
 
     expandHeader._headerBtn.tag = section;
 
@@ -122,44 +122,54 @@
     
 }
 
-#pragma mark - Click To Expand
+-(void)tableView:(UITableView *)tableView willDisplayHeaderView:(UIView *)view forSection:(NSInteger)section {
+    
+    expandHeaderView *expandHeader = (expandHeaderView *)view;
+    if ([[_expands objectAtIndex:section] integerValue]==1)
+    {
+        [expandHeader._headerBtn setBackgroundColor:[UIColor darkGrayColor]];
+        [expandHeader selectedAnimation];
+        _transform = expandHeader._arrow.transform;
+    }
+    else
+    {
+        [expandHeader._headerBtn setBackgroundColor:[UIColor lightGrayColor]];
+        expandHeader._arrow.transform = _transform;
+        [expandHeader normalAnimation];
+    }
+}
+
+#pragma mark - Click To Expands
 
 -(void)expandCell:(UIButton *)sender{
 
+    /**
+     when use insert or delete rows you can use the code below
+     
+     NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
+
+    for (NSInteger i = 0; i != [[_testDatas objectAtIndex:section] integerValue]; ++ i) {
+
+        NSIndexPath *newPath = [NSIndexPath indexPathForRow:i inSection:section];
+        [insertIndexPaths addObject:newPath];
+    }
+    **/
+    
     if (!_compeleteAnimation ) {
         return;
     }
     
     NSInteger section = sender.tag;
     NSInteger thisSectionCanExpand = ![[_expands objectAtIndex:section] integerValue];
-    NSMutableArray *insertIndexPaths = [[NSMutableArray alloc] init];
     _animationNum = [[_testDatas objectAtIndex:section] integerValue];
 
-    for (NSInteger i = 0; i != [[_testDatas objectAtIndex:section] integerValue]; ++ i) {
-        
-        NSIndexPath *newPath = [NSIndexPath indexPathForRow:i inSection:section];
-        [insertIndexPaths addObject:newPath];
-    }
+    [_expands replaceObjectAtIndex:section withObject:@(thisSectionCanExpand)];
+    _compeleteAnimation = NO;
+    [_contentTableView beginUpdates];
+    [_contentTableView reloadSections:[[NSIndexSet alloc] initWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
+    [_contentTableView endUpdates];
+    _compeleteAnimation = YES;
     
-    if (thisSectionCanExpand) //展开列表
-    {
-        [sender setBackgroundColor:[UIColor lightGrayColor]];
-        [_expands replaceObjectAtIndex:section withObject:@"1"];
-        _compeleteAnimation = NO;
-        [_contentTableView beginUpdates];
-        [_contentTableView reloadSections:[[NSIndexSet alloc] initWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
-        [_contentTableView endUpdates];
-        _compeleteAnimation = YES;
-    }
-    else
-    {
-        [_expands replaceObjectAtIndex:section withObject:@"0"];
-        _compeleteAnimation = NO;
-        [_contentTableView beginUpdates];
-        [_contentTableView reloadSections:[[NSIndexSet alloc] initWithIndex:section] withRowAnimation:UITableViewRowAnimationFade];
-        [_contentTableView endUpdates];
-        _compeleteAnimation = YES;
-    }
 }
 
 
