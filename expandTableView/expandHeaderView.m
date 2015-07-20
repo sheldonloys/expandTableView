@@ -24,6 +24,7 @@
         [self.contentView addSubview:_headerBtn];
         
         _arrow = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"arrow.png"]];
+        _arrow.center = CGPointMake(_arrow.frame.size.width, 25);
         [self.contentView addSubview:_arrow];
     }
     return self;
